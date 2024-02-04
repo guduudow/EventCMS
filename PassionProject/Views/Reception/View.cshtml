@@ -1,0 +1,16 @@
+﻿@model PassionProject.Models.ReceptionDto
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>About the Reception</h2>
+<a href="/Reception/List">Back to the List</a>
+
+<h3>@Model.ReceptionName</h3>
+<h2>Location: @Model.ReceptionLocation</h2>
+<p>Date: @Model.ReceptionDate</p>
+<p>Start Time: @Model.StartTime</p>
+<p>End Time: @Model.EndTime</p>
+<p>Price (CDN): $@Model.ReceptionPrice</p>
+<p>Description: @Model.ReceptionDescription</p>
+

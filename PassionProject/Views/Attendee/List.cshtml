@@ -1,0 +1,13 @@
+﻿@model IEnumerable<PassionProject.Models.AttendeeDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var attendee in Model)
+ {
+    <h2><a href="/Attendee/View/@attendee.AttendeeID">@attendee.FirstName @attendee.LastName</a></h2>
+    <p>Email: @attendee.Email</p>
+    <p>Phone Number: @attendee.PhoneNumber</p>
+
+ }

@@ -1,0 +1,12 @@
+﻿@model PassionProject.Models.AttendeeDto
+@{
+    ViewBag.Title = "View";
+}
+
+<h1>Show Attendee</h1>
+
+<a href="/Attendee/List">Back to the List</a>
+<h2>@Model.FirstName @Model.LastName</h2>
+<p>Email: @Model.Email</p>
+<p>Phone Number: @Model.PhoneNumber</p>
+

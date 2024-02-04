@@ -1,0 +1,16 @@
+﻿@model IEnumerable<PassionProject.Models.ReceptionDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var Reception in Model)
+{
+    <h2><a href="/Reception/View/@Reception.ReceptionID">@Reception.ReceptionName</a></h2>
+    <h2>Location: @Reception.ReceptionLocation</h2>
+    <p>Date: @Reception.ReceptionDate</p>
+    <p>Start Time: @Reception.StartTime</p>
+    <p>End Time: @Reception.EndTime</p>
+    <p>Price (CDN): @Reception.ReceptionPrice</p>
+    <p>Description: @Reception.ReceptionDescription</p>
+}
