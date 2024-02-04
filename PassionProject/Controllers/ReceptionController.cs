@@ -15,6 +15,7 @@ namespace PassionProject.Controllers
     {
 
         private static readonly HttpClient client;
+        private JavaScriptSerializer jss = new JavaScriptSerializer();
 
         static ReceptionController()
         {
@@ -62,6 +63,10 @@ namespace PassionProject.Controllers
             //Debug.WriteLine(selectedreception.ReceptionName);
 
             return View(selectedreception);
+        }
+
+        public ActionResult Errors()
+        {
             return View();
         }
 
@@ -80,59 +85,81 @@ namespace PassionProject.Controllers
 
             string url = "addreception";
 
-            JavaScriptSerializer jss = new JavaScriptSerializer();
+            
             string jsonpayload = jss.Serialize(reception);
 
             Debug.WriteLine(jsonpayload);
 
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
-            client.PostAsync(url, content);
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if(response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("List");
 
-            return RedirectToAction("List");
+            } else
+            {
+                return RedirectToAction("Errors");
+            }
+
+            
         }
 
         // GET: Reception/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            string url = "findreception/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            ReceptionDto selectedreception = response.Content.ReadAsAsync<ReceptionDto>().Result;
+            return View(selectedreception);
         }
 
         // POST: Reception/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Reception reception)
         {
-            try
+            string url = "updatereception/" + id;
+            string jsonpayload = jss.Serialize(reception);
+            HttpContent content = new StringContent(jsonpayload);
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            Debug.WriteLine(content);
+            if (response.IsSuccessStatusCode)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Errors");
             }
         }
 
-        // GET: Reception/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Reception/DeleteConfirm/5
+        public ActionResult DeleteConfirm(int id)
         {
-            return View();
+            string url = "findreception/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            ReceptionDto selectedreception = response.Content.ReadAsAsync<ReceptionDto>().Result;
+            return View(selectedreception);
         }
 
         // POST: Reception/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Reception reception)
         {
-            try
+            string url = "deletereception/" + id;
+            string jsonpayload = jss.Serialize(reception);
+            HttpContent content = new StringContent(jsonpayload);
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            Debug.WriteLine(content);
+            if (response.IsSuccessStatusCode)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Errors");
             }
         }
     }

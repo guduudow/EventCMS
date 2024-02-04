@@ -1,0 +1,29 @@
+﻿@model PassionProject.Models.AttendeeDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Update an Attendee</h2>
+<form action="/Attendee/Update" method="POST">
+    <div>
+        <label>First Name: </label>
+        <input name="FirstName" type="text" value="FirstName"/>
+    </div>
+    <div>
+        <label>Last Name: </label>
+        <input name="LastName" type="text" value="LastName"/>
+    </div>
+    <div>
+        <label>Email: </label>
+        <input name="Email" type="email" value="Email"/>
+    </div>
+    <div>
+        <label>Phone Number: </label>
+        <input name="PhoneNumber" type="text" value="PhoneNumber"/>
+    </div>
+
+    <div>
+        <input type="submit" value="Update Attendee" />
+    </div>
+</form>
+

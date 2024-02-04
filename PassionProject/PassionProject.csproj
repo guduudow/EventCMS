@@ -303,6 +303,12 @@
     <Content Include="Views\Reception\View.cshtml" />
     <Content Include="Views\Attendee\New.cshtml" />
     <Content Include="Views\Reception\New.cshtml" />
+    <Content Include="Views\Reception\Errors.cshtml" />
+    <Content Include="Views\Attendee\Errors.cshtml" />
+    <Content Include="Views\Attendee\Edit.cshtml" />
+    <Content Include="Views\Reception\Edit.cshtml" />
+    <Content Include="Views\Reception\DeleteConfirm.cshtml" />
+    <Content Include="Views\Attendee\DeleteConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
