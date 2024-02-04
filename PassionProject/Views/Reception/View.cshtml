@@ -6,6 +6,8 @@
 <h2>About the Reception</h2>
 <a href="/Reception/List">Back to the List</a>
 
+<a class="btn btn-secondary" href="/Reception/Edit/@Model.ReceptionID">Edit Reception</a>
+
 <h3>@Model.ReceptionName</h3>
 <h2>Location: @Model.ReceptionLocation</h2>
 <p>Date: @Model.ReceptionDate</p>
@@ -13,4 +15,6 @@
 <p>End Time: @Model.EndTime</p>
 <p>Price (CDN): $@Model.ReceptionPrice</p>
 <p>Description: @Model.ReceptionDescription</p>
+
+<a class="btn btn-danger" href="/Attendee/DeleteConfirm/@Model.ReceptionID">Delete Reception</a>
 

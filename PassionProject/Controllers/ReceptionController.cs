@@ -114,9 +114,9 @@ namespace PassionProject.Controllers
             return View(selectedreception);
         }
 
-        // POST: Reception/Edit/5
+        // POST: Reception/Update/5
         [HttpPost]
-        public ActionResult Edit(int id, Reception reception)
+        public ActionResult Update(int id, Reception reception)
         {
             string url = "updatereception/" + id;
             string jsonpayload = jss.Serialize(reception);

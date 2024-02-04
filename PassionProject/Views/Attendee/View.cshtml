@@ -6,7 +6,12 @@
 <h1>Show Attendee</h1>
 
 <a href="/Attendee/List">Back to the List</a>
+
+<a class="btn btn-secondary" href="/Attendee/Edit/@Model.AttendeeID">Edit Attendee</a>
+
 <h2>@Model.FirstName @Model.LastName</h2>
 <p>Email: @Model.Email</p>
 <p>Phone Number: @Model.PhoneNumber</p>
+
+<a class="btn btn-danger" href="/Attendee/DeleteConfirm/@Model.AttendeeID">Delete Attendee</a>
 

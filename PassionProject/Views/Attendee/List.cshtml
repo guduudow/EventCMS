@@ -4,6 +4,9 @@
 }
 
 <h2>List</h2>
+
+<a class="btn btn-warning" href="/Attendee/New">Add an Attendee</a>
+
 @foreach (var attendee in Model)
  {
     <h2><a href="/Attendee/View/@attendee.AttendeeID">@attendee.FirstName @attendee.LastName</a></h2>

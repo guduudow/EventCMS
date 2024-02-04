@@ -4,6 +4,9 @@
 }
 
 <h2>List</h2>
+
+<a class="btn btn-warning" href="/Reception/New">Add a Reception</a>
+
 @foreach (var Reception in Model)
 {
     <h2><a href="/Reception/View/@Reception.ReceptionID">@Reception.ReceptionName</a></h2>
