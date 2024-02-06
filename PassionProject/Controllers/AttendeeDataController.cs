@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using PassionProject.Migrations;
 using PassionProject.Models;
 
 namespace PassionProject.Controllers
@@ -138,6 +139,40 @@ namespace PassionProject.Controllers
         private bool AttendeeExists(int id)
         {
             return db.Attendees.Count(e => e.AttendeeID == id) > 0;
+        }
+
+        ///<summary>
+        ///Gathers information about attendees related to a specific event
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: Event has the names of the attendees going to the event
+        /// </returns>
+        /// <param name="id">Reception ID</param>
+        /// <example>
+        /// GET: api/AttendeeData/ListAttendeesForEvent/2
+        /// </example>
+        /// 
+        [HttpGet]
+        public IHttpActionResult ListAttendeesForReception(int id)
+        {
+            //all attendees that have events which match with our id
+            List<Attendee> Attendees = db.Attendees.Where(
+               a=>a.Receptions.Any(
+                r=>r.ReceptionID==id
+                )).ToList();
+            List<AttendeeDto> AttendeeDtos = new List<AttendeeDto>();
+
+            Attendees.ForEach(a => AttendeeDtos.Add(new AttendeeDto()
+            {
+                AttendeeID = a.AttendeeID,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                Email = a.Email,
+                PhoneNumber = a.PhoneNumber
+            }));
+
+            return Ok(AttendeeDtos);
         }
     }
 }

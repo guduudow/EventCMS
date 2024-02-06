@@ -145,5 +145,41 @@ namespace PassionProject.Controllers
         {
             return db.Receptions.Count(e => e.ReceptionID == id) > 0;
         }
+
+        ///<summary>
+        ///Gathers information about events related to a specific attendee
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: Attendee has the names of the receptions they signed up for
+        /// </returns>
+        /// <param name="id">Attendee ID</param>
+        /// <example>
+        /// GET: api/AttendeeData/ListReceptionsForAttendee/2
+        /// </example>
+        /// 
+        [HttpGet]
+        public IHttpActionResult ListReceptionsForAttendee(int id)
+        {
+            //all receptions that have attendees which match with our id
+            List<Reception> Receptions = db.Receptions.Where(
+               r => r.Attendees.Any(
+                a => a.AttendeeID == id
+                )).ToList();
+            List<ReceptionDto> ReceptionDtos = new List<ReceptionDto>();
+
+            Receptions.ForEach(r => ReceptionDtos.Add(new ReceptionDto()
+            {
+                ReceptionID = r.ReceptionID,
+                ReceptionName = r.ReceptionName,
+                ReceptionLocation = r.ReceptionLocation,
+                StartTime = r.StartTime,
+                EndTime = r.EndTime,
+                ReceptionPrice = r.ReceptionPrice,
+                ReceptionDescription = r.ReceptionDescription
+            }));
+
+            return Ok(ReceptionDtos);
+        }
     }
 }
