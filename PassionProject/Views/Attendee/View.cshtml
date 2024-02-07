@@ -1,4 +1,4 @@
-﻿@model PassionProject.Models.AttendeeDto
+﻿@model PassionProject.Models.ViewModels.DetailsAttendee 
 @{
     ViewBag.Title = "View";
 }
@@ -7,11 +7,19 @@
 
 <a href="/Attendee/List">Back to the List</a>
 
-<a class="btn btn-secondary" href="/Attendee/Edit/@Model.AttendeeID">Edit Attendee</a>
+<a class="btn btn-secondary" href="/Attendee/Edit/@Model.SelectedAttendee.AttendeeID">Edit Attendee</a>
 
-<h2>@Model.FirstName @Model.LastName</h2>
-<p>Email: @Model.Email</p>
-<p>Phone Number: @Model.PhoneNumber</p>
+<h2>@Model.SelectedAttendee.FirstName @Model.SelectedAttendee.LastName</h2>
+<p>Email: @Model.SelectedAttendee.Email</p>
+<p>Phone Number: @Model.SelectedAttendee.PhoneNumber</p>
 
-<a class="btn btn-danger" href="/Attendee/DeleteConfirm/@Model.AttendeeID">Delete Attendee</a>
+<div>
+    <h3>Reception Signed up for:</h3>
+    @foreach (var reception in Model.RegEvents)
+    {
+        <a href="/Reception/View/@reception.ReceptionID">@reception.ReceptionName </a><br />
+    }
+</div>
+
+<a class="btn btn-danger" href="/Attendee/DeleteConfirm/@Model.SelectedAttendee.AttendeeID">Delete Attendee</a>
 

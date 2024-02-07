@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using PassionProject.Models;
 using PassionProject.Migrations;
 using System.Web.Script.Serialization;
+using PassionProject.Models.ViewModels;
 
 namespace PassionProject.Controllers
 {
@@ -21,7 +22,7 @@ namespace PassionProject.Controllers
         static AttendeeController() 
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44300/api/attendeedata/");
+            client.BaseAddress = new Uri("https://localhost:44300/api/");
         }
 
 
@@ -32,7 +33,7 @@ namespace PassionProject.Controllers
             //curl https://localhost:44300/api/attendeedata/listattendees
 
             
-            string url = "listattendees";
+            string url = "attendeedata/listattendees";
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -49,11 +50,13 @@ namespace PassionProject.Controllers
         // GET: Attendee/Details/5
         public ActionResult View(int id)
         {
+            DetailsAttendee ViewModel = new DetailsAttendee();
+
             //objective: communicate with my attendee data api to retrieve one attendee
             //curl https://localhost:44300/api/attendeedata/findattendee/id
 
-            
-            string url = "findattendee/"+id;
+
+            string url = "attendeedata/findattendee/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -65,8 +68,21 @@ namespace PassionProject.Controllers
             //Debug.WriteLine(selectedattendee.FirstName);
             //Debug.WriteLine(selectedattendee.LastName);
 
-            return View(selectedattendee);
+            ViewModel.SelectedAttendee = selectedattendee;
+
+            //show all events that the selected attendee signed up for
+
+            url = "receptiondata/listreceptionsforattendee/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<ReceptionDto> RegEvents = response.Content.ReadAsAsync<IEnumerable<ReceptionDto>>().Result;
+            //JsonConvert.DeserializeObject<List<AttendeeDto>>();
+
+            ViewModel.RegEvents = RegEvents;
+
+            return View(ViewModel);
         }
+
+        
 
 
         public ActionResult Errors()
@@ -87,7 +103,7 @@ namespace PassionProject.Controllers
             Debug.WriteLine("The json payload is ");
             //Debug.WriteLine(attendee.FirstName + " " + attendee.LastName);
             //objective add a new attendee to the API
-            string url = "addattendee";
+            string url = "attendeedata/addattendee";
 
             
             string jsonpayload = jss.Serialize(attendee);
@@ -111,7 +127,7 @@ namespace PassionProject.Controllers
         // GET: Attendee/Edit/5
         public ActionResult Edit(int id)
         {
-            string url = "findattendee/" + id;
+            string url = "attendeedata/findattendee/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             AttendeeDto selectedattendee = response.Content.ReadAsAsync<AttendeeDto>().Result;
             return View(selectedattendee);
@@ -121,7 +137,7 @@ namespace PassionProject.Controllers
         [HttpPost]
         public ActionResult Update(int id, Attendee attendee)
         {
-            string url = "updateattendee/" + id;
+            string url = "attendeedata/updateattendee/" + id;
             string jsonpayload = jss.Serialize(attendee);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
@@ -139,7 +155,7 @@ namespace PassionProject.Controllers
         // GET: Attendee/DeleteConfirm/5
         public ActionResult DeleteConfirm(int id)
         {
-            string url = "findattendee/" + id;
+            string url = "attendeedata/findattendee/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             AttendeeDto selectedattendee = response.Content.ReadAsAsync<AttendeeDto>().Result;
             return View(selectedattendee);
@@ -149,7 +165,7 @@ namespace PassionProject.Controllers
         [HttpPost]
         public ActionResult Delete(int id, Attendee attendee)
         {
-            string url = "deleteattendee/" + id;
+            string url = "attendeedata/deleteattendee/" + id;
             string jsonpayload = jss.Serialize(attendee);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";

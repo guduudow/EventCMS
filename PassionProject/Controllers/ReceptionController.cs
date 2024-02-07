@@ -6,8 +6,10 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using PassionProject.Migrations;
 using PassionProject.Models;
+using PassionProject.Models.ViewModels;
 
 namespace PassionProject.Controllers
 {
@@ -20,7 +22,7 @@ namespace PassionProject.Controllers
         static ReceptionController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44300/api/Receptiondata/");
+            client.BaseAddress = new Uri("https://localhost:44300/api/");
         }
 
 
@@ -32,7 +34,7 @@ namespace PassionProject.Controllers
             //curl https://localhost:44300/api/Receptiondata/listReceptions
 
             
-            string url = "listReceptions";
+            string url = "Receptiondata/listReceptions";
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -48,11 +50,14 @@ namespace PassionProject.Controllers
         // GET: Reception/Details/5
         public ActionResult View(int id)
         {
+
+            DetailsReception ViewModel = new DetailsReception();
+
             //objective: communicate with my Reception data api to retreive one reception
             //curl https://localhost:44300/api/Receptiondata/findReception/{id}
 
             
-            string url = "findreception/"+id;
+            string url = "Receptiondata/findreception/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -62,7 +67,54 @@ namespace PassionProject.Controllers
             //Debug.WriteLine("Chosen Reception: ");
             //Debug.WriteLine(selectedreception.ReceptionName);
 
-            return View(selectedreception);
+            ViewModel.SelectedReception = selectedreception;
+
+            //show all attendees who signed up for this event
+
+            url = "attendeedata/listattendeesforreception/"+id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<AttendeeDto> RegAttendees = response.Content.ReadAsAsync<IEnumerable<AttendeeDto>>().Result;
+            
+
+            ViewModel.RegAttendees = RegAttendees;
+
+            url = "attendeedata/ListAttendeesNotSignedUpForReception/"+id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<AttendeeDto> PotenialAttendees = response.Content.ReadAsAsync<IEnumerable<AttendeeDto>>().Result;
+
+            ViewModel.PotenialAttendees= PotenialAttendees;
+
+
+            return View(ViewModel);
+        }
+
+        //POST: Reception/Add/{id}
+        [HttpPost]
+        public ActionResult Add(int id, int attendeeid)
+        {
+            Debug.WriteLine("Attempting to associate reception id"+id +" with attendeeid " + attendeeid);
+
+            string url = "attendeedata/AddAttendeeToReception/" + id + "/" + attendeeid;
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("View/"+id);
+        }
+
+
+        //GET: Reception/Remove/{id}?AttendeeID={attendeeid}
+        [HttpGet]
+        public ActionResult Remove(int id, int attendeeid)
+        {
+            Debug.WriteLine("Attempting to remove reception id" + id + " with attendeeid " + attendeeid);
+
+            string url = "attendeedata/RemoveAttendeeFromReception/" + id + "/" + attendeeid;
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("View/" + id);
         }
 
         public ActionResult Errors()
@@ -83,7 +135,7 @@ namespace PassionProject.Controllers
             Debug.WriteLine("The name of the inputted reception is ");
             Debug.WriteLine(reception.ReceptionName);
 
-            string url = "addreception";
+            string url = "Receptiondata/addreception";
 
             
             string jsonpayload = jss.Serialize(reception);
@@ -108,7 +160,7 @@ namespace PassionProject.Controllers
         // GET: Reception/Edit/5
         public ActionResult Edit(int id)
         {
-            string url = "findreception/" + id;
+            string url = "Receptiondata/findreception/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             ReceptionDto selectedreception = response.Content.ReadAsAsync<ReceptionDto>().Result;
             return View(selectedreception);
@@ -118,7 +170,7 @@ namespace PassionProject.Controllers
         [HttpPost]
         public ActionResult Update(int id, Reception reception)
         {
-            string url = "updatereception/" + id;
+            string url = "Receptiondata/updatereception/" + id;
             string jsonpayload = jss.Serialize(reception);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
@@ -137,7 +189,7 @@ namespace PassionProject.Controllers
         // GET: Reception/DeleteConfirm/5
         public ActionResult DeleteConfirm(int id)
         {
-            string url = "findreception/" + id;
+            string url = "Receptiondata/findreception/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             ReceptionDto selectedreception = response.Content.ReadAsAsync<ReceptionDto>().Result;
             return View(selectedreception);
@@ -147,7 +199,7 @@ namespace PassionProject.Controllers
         [HttpPost]
         public ActionResult Delete(int id, Reception reception)
         {
-            string url = "deletereception/" + id;
+            string url = "Receptiondata/deletereception/" + id;
             string jsonpayload = jss.Serialize(reception);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";

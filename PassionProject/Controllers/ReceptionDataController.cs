@@ -159,6 +159,7 @@ namespace PassionProject.Controllers
         /// </example>
         /// 
         [HttpGet]
+        [ResponseType(typeof(ReceptionDto))]
         public IHttpActionResult ListReceptionsForAttendee(int id)
         {
             //all receptions that have attendees which match with our id
