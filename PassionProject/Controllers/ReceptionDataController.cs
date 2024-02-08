@@ -16,7 +16,17 @@ namespace PassionProject.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/ReceptionData/ListReceptions
+        /// <summary>
+        /// Returns all receptions in the system.
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all receptions in the database
+        /// </returns>
+        /// <example>
+        /// GET: api/ReceptionData/ListReceptions
+        /// </example>
+        // 
         [HttpGet]
         public IEnumerable<ReceptionDto> ListReceptions()
         {
@@ -38,7 +48,20 @@ namespace PassionProject.Controllers
             return ReceptionDtos;
         }
 
-        // GET: api/ReceptionData/FindReception/5
+        /// <summary>
+        /// Returns all receptions in the system.
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: A reception in the system matching up to the Reception ID primary key
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <param name="id">The primary key of the Reception</param>
+        /// <example>
+        /// GET: api/ReceptionData/FindReception/5
+        /// </example>
+        
         [ResponseType(typeof(Reception))]
         [HttpGet]
         public IHttpActionResult FindReception(int id)
@@ -63,7 +86,25 @@ namespace PassionProject.Controllers
             return Ok(ReceptionDto);
         }
 
-        // POST: api/ReceptionData/UpdateReception/5
+
+        /// <summary>
+        /// Updates a particular reception in the system with POST Data input
+        /// </summary>
+        /// <param name="id">Represents the reception ID primary key</param>
+        /// <param name="reception">JSON FORM DATA of a reception</param>
+        /// <returns>
+        /// HEADER: 204 (Success, No Content Response)
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// or
+        /// HEADER: 404 (Not Found)
+        /// </returns>
+        /// <example>
+        /// POST: api/ReceptionData/UpdateReception/5
+        /// FORM DATA: reception JSON Object
+        /// </example>
+
+
         [ResponseType(typeof(void))]
         [HttpPost]
         public IHttpActionResult UpdateReception(int id, Reception Reception)
@@ -99,7 +140,22 @@ namespace PassionProject.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/ReceptionData/AddReception
+        /// <summary>
+        /// Adds a reception to the system
+        /// </summary>
+        /// <param name="Reception">JSON FORM DATA of an reception</param>
+        /// <returns>
+        /// HEADER: 201 (Created)
+        /// CONTENT: Reception ID, Reception Data
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// </returns>
+        /// <example>
+        /// POST: api/ReceptionData/AddReception
+        /// FORM DATA: Reception JSON Object
+        /// </example>
+
+        
         [ResponseType(typeof(Reception))]
         [HttpPost]
         public IHttpActionResult AddReception(Reception Reception)
@@ -115,7 +171,22 @@ namespace PassionProject.Controllers
             return CreatedAtRoute("DefaultApi", new { id = Reception.ReceptionID }, Reception);
         }
 
-        // POST: api/ReceptionData/DeleteReception/5
+
+        /// <summary>
+        /// Deletes a reception from the system by it's ID.
+        /// </summary>
+        /// <param name="id">The primary key of the reception</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/ReceptionData/DeleteReception/5
+        /// FORM DATA: (empty)
+        /// </example>
+
+        
         [ResponseType(typeof(Reception))]
         [HttpPost]
         public IHttpActionResult DeleteReception(int id)
