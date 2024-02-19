@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light">
         <div class="container">
             @Html.ActionLink("Event Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
@@ -20,7 +20,6 @@
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Attendees", "List", "Attendee", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Receptions", "List", "Reception", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                  @Html.Partial("_LoginPartial")
             </div>
@@ -30,7 +29,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Ederes Gure. All Rights Reserved</p>
         </footer>
     </div>
 
