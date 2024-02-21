@@ -1,6 +1,6 @@
-# PassionProject
+# Event Management System
 
-This project is a CMS (Content Management System) created with ASP.NET. The project is an event management system where users and events can be created, read, updated, and deleted. The project involves a many-to-many relationship, as each user can sign up for multiple events and an event can have multiple users. It utilizes Microsoft's SQL Server Database to create local databases.
+This project is a EMS (Event Management System) created with ASP.NET, where users and events can be created, read, updated, and deleted. The project involves a many-to-many relationship, as each user can sign up for multiple events and an event can have multiple users. It utilizes Microsoft's SQL Server Database to create local databases.
 
 For this project specifically, there are three tables. The first one is a user table (called attendee). It lists all the potential signees in the system. The columns it contains are First Name, Last Name, Email, and Phone Number. The second table is the events table (called Receptions), it has all the events in the system as well. The columns it contains are The Name, Location, Date, Description, Start Time, End Time, and Price of the event. The last table is a bridging table which links the two aforementioned tables together by their primary ID.
 
